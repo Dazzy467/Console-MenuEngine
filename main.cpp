@@ -50,7 +50,7 @@ int main()
 {
     MenuEngine men;
     MenuEngine men2;
-    std::vector <std::string> menus = {"Mulai","Opsi",dropMenu[0],"Keluar"};
+    std::vector<std::string> menus = {"Mulai","Opsi",dropMenu[0],"Keluar"};
     std::vector<std::string> dummyMenu = {"Dummy1","Dummy2","Dummy3"};
     
     men2.setMenu(dummyMenu,NULL,NULL,1);
@@ -79,6 +79,51 @@ int main()
         
     if (index_y == 0)
     {
+         if (men.returnsAtIndex(1))
+         {
+             //init
+             index_y = 0;
+             system("cls");
+             std::vector<std::string> opsi_1 = {"AA","Ambient occlusion","Shadow quality","Kembali"};
+             std::vector<std::string> opsi_2 = {"Subtitle","Language","Sound volume"};
+             MenuEngine opsi[2];
+             opsi[0].setMenu(opsi_1,0,0,0);
+             opsi[1].setMenu(opsi_2,0,0,1);
+             do{
+                 opsi[0].drawMenu(20,5,1,index_y);
+                 opsi[1].drawMenu(60,5,1,index_y);
+                 if (GetAsyncKeyState(VK_RIGHT) < 0 && index_y == 0)
+                 {
+                     if (opsi[0].Index != 3)
+                     opsi[1].Index = opsi[0].Index;
+                     else if (opsi[0].Index == 3)
+                     opsi[1].Index = opsi[0].Index - 1;
+
+                     if (index_y < 1)
+                     index_y++;
+                 }
+                 if (GetAsyncKeyState(VK_LEFT) < 0 && index_y == 1)
+                 {
+                     opsi[0].Index = opsi[1].Index;
+                     if (index_y > 0)
+                     index_y--;
+                 }
+
+                 if(index_y == 0)
+                 {
+                  NavKey(opsi[0],3);
+                  if (opsi[0].returnsAtIndex(3))
+                  { 
+                      opsi[0].kill();
+                      system("cls");
+                      index_y = 0;
+                  }
+                 }
+                 else NavKey(opsi[1],2);
+                Sleep(15);
+             }while(opsi[0].isrun());
+
+         }
          if (men.returnsAtIndex(2))
          {
             system("cls");
@@ -104,14 +149,14 @@ int main()
                         break;
                     }
                 }
-
+            Sleep(15);
             }while(dropMen.isrun());
         }
-
          if (men.returnsAtIndex(3))
         {
             men.kill();
         }
      }
+     Sleep(15);
     }while(men.isrun());
 }
