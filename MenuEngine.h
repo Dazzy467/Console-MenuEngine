@@ -51,12 +51,18 @@ public:
 
 	//aksessor
 	const bool isrun() { return this->isRun; }
+	const size_t SizeOfreturnKey(){return returnKey.size();}
 private:
 	//var
 	std::vector<std::string> menus;
 	HANDLE konsol = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD kordinat;
-	bool returnKey[999];
+	//Need to turn the returnkey array to a vector to dynamically change
+	//bool returnKey[999];
+
+	//i use vector to just make it resizeable with the amount of index of the menu
+	//this should be efficient i believe
+	std::vector<bool> returnKey;
 	bool isRun;
 	bool CLR_USED;
 	int color_cd;

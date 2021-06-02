@@ -9,11 +9,6 @@ MenuEngine::MenuEngine()
 	Index = 0;
 	menId = 0;
 	isRun = true;
-	for (int i = 0; i < sizeof(returnKey) / sizeof(returnKey[0]); i++)
-	{
-		returnKey[i] = false;                                  // This looks very innefficient
-	}
-	
 	CLR_USED = 0;
 	color_cd = 0;
 }
@@ -22,6 +17,9 @@ void MenuEngine::setMenu(std::vector<std::string> A,int useclr,int color,int set
 {
 	menId = setId;
 	this->menus = A;
+	//check for vector size
+	if (returnKey.size() != A.size())
+	returnKey.resize(A.size(),false);
 	if (useclr == USE_COLOR)
 	{
 		CLR_USED = true;
