@@ -45,24 +45,27 @@ void localNavkey(MenuEngine& obj, int maxIndx,int minIndx,bool cycle)
         }
     }else keydown[1] = false;
 }
-
 int main()
 {
     MenuEngine men;
     MenuEngine men2;
     std::vector<std::string> menus = {"Mulai","Opsi",dropMenu[0],"Keluar"};
     std::vector<std::string> dummyMenu = {"Dummy1","Dummy2","Dummy3"};
-    
-    men2.setMenu(dummyMenu,NULL,NULL,1);
-    std::cout << "Size: " << menus.size() << std::endl;
-    std::cin.get();
+    men.setMenu(&menus,NULL,NULL,0);
+    men2.setMenu(&dummyMenu,NULL,NULL,1);
+    std::cout << "Memory usage check\n";
+    std::cout << "Size of menus vector: " << sizeof(menus) << std::endl;
+    std::cout << "Size of men return key: "<< men.SizeOfreturnKey() << std::endl;
+    std::cout << "Size of men2 return key: "<< men2.SizeOfreturnKey() << std::endl;
+    system("pause");
+    system("cls");
     do{
-        men.setMenu(menus,NULL,NULL,0);
         men.drawMenu(30,10,1,index_y);
         men2.drawMenu(30,25,1,index_y);
         SetPos(50,10); std::cout <<"men2 index: "<< men2.Index;
         SetPos(50,11); std::cout <<"Index Y: "<< index_y;
-
+        SetPos(50,12); std::cout << "Size of men return key: "<< men.SizeOfreturnKey();
+        SetPos(50,13); std::cout << "Size of men2 return key: "<< men2.SizeOfreturnKey();
         //men.drawItem(48,12,NULL,dropMenu[pilihanDropmen]);
         if (men.Index != 4 && index_y != 1)
         {
@@ -76,7 +79,6 @@ int main()
                 men.Index = 3;
             }
         else index_y = 0;
-        
     if (index_y == 0)
     {
          if (men.returnsAtIndex(1))
@@ -87,8 +89,8 @@ int main()
              std::vector<std::string> opsi_1 = {"AA","Ambient occlusion","Shadow quality","Kembali"};
              std::vector<std::string> opsi_2 = {"Subtitle","Language","Sound volume"};
              MenuEngine opsi[2];
-             opsi[0].setMenu(opsi_1,0,0,0);
-             opsi[1].setMenu(opsi_2,0,0,1);
+             opsi[0].setMenu(&opsi_1,0,0,0);
+             opsi[1].setMenu(&opsi_2,0,0,1);
              do{
                  opsi[0].drawMenu(20,5,1,index_y);
                  opsi[1].drawMenu(60,5,1,index_y);
@@ -122,18 +124,20 @@ int main()
                  else NavKey(opsi[1],2);
                 Sleep(15);
              }while(opsi[0].isrun());
-
          }
          if (men.returnsAtIndex(2))
          {
             system("cls");
+            std::cout << "stringVecptr memory before allocation: " << stringVecptr << "\n";
             stringVecptr = new std::vector<std::string>;
+            std::cout << "stringVecptr memory after allocation: " << stringVecptr << "\n";
+            std::cout << "stringVecptr after allocation: " << stringVecptr->size() << "\n";
             for(int i = 0; i < sizeof(dropMenu)/sizeof(*dropMenu); i++)
             {
                 stringVecptr->push_back(dropMenu[i]);
             }
             MenuEngine dropMen;
-            dropMen.setMenu(*stringVecptr,NULL,NULL,0);
+            dropMen.setMenu(stringVecptr,NULL,NULL,0);
             do{
                 dropMen.drawMenu(30,10,1,0);
                 NavKey(dropMen,stringVecptr->size()-1);
@@ -144,8 +148,13 @@ int main()
                         pilihanDropmen = i;
                         menus[2] = dropMenu[i];
                         dropMen.kill();
-                        system("cls");
+                        std::cout << std::endl;
+                        std::cout << "stringVecptr before deletion: " << stringVecptr->size() << std::endl;
                         delete stringVecptr;
+                        std::cout << "stringVecptr after deletion: " << stringVecptr->size() << std::endl;
+                        stringVecptr = nullptr;
+                        system("pause");
+                        system("cls");
                         break;
                     }
                 }
@@ -154,7 +163,13 @@ int main()
         }
          if (men.returnsAtIndex(3))
         {
+            system("cls");
             men.kill();
+    std::cout << "Memory usage check\n";
+    std::cout << "Size of menus vector: " << sizeof(menus) << std::endl;
+    std::cout << "Size of men return key: "<< men.SizeOfreturnKey() << std::endl;
+    std::cout << "Size of men2 return key: "<< men2.SizeOfreturnKey() << std::endl;
+    system("pause");
         }
      }
      Sleep(15);
