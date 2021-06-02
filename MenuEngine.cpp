@@ -13,13 +13,13 @@ MenuEngine::MenuEngine()
 	color_cd = 0;
 }
 
-void MenuEngine::setMenu(std::vector<std::string> A,int useclr,int color,int setId)
+void MenuEngine::setMenu(std::vector<std::string>* A,int useclr,int color,int setId)
 {
 	menId = setId;
 	this->menus = A;
 	//check for vector size
-	if (returnKey.size() != A.size())
-	returnKey.resize(A.size(),false);
+	if (returnKey.size() != A->size())
+	returnKey.resize(A->size(),false);
 	if (useclr == USE_COLOR)
 	{
 		CLR_USED = true;
@@ -31,15 +31,15 @@ void MenuEngine::setMenu(std::vector<std::string> A,int useclr,int color,int set
 void MenuEngine::drawMenu(int x, int y,int spacing,int id)
 {
 	if (!CLR_USED)
-	for (size_t i = 0; i < menus.size(); i++)
+	for (size_t i = 0; i < menus->size(); i++)
 	{
-		setPos(x, y + (i * spacing)); arrow(i,id); std::cout << menus[i];
+		setPos(x, y + (i * spacing)); arrow(i,id); std::cout << menus->at(i);
 	}
 	else
 	{
-		for (size_t i = 0; i < menus.size(); i++)
+		for (size_t i = 0; i < menus->size(); i++)
 		{
-			setPos(x, y + (i * spacing)); clrd(color_cd,i,id); std::cout << menus[i];
+			setPos(x, y + (i * spacing)); clrd(color_cd,i,id); std::cout << menus->at(i);
 		}
 		SetConsoleTextAttribute(konsol, 7);
 	}

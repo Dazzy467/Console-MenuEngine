@@ -29,7 +29,7 @@ public:
 	int Index;
 
 	//fungsi
-	void setMenu(std::vector<std::string> A,int useclr,int color,int setId);
+	void setMenu(std::vector<std::string>* A,int useclr,int color,int setId);
 	void drawMenu(int x,int y,int spacing,int id);
 	void setPos(SHORT x, SHORT y);
 	template<typename arg>
@@ -54,7 +54,7 @@ public:
 	const size_t SizeOfreturnKey(){return returnKey.size();}
 private:
 	//var
-	std::vector<std::string> menus;
+	std::vector<std::string>* menus;
 	HANDLE konsol = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD kordinat;
 	//Need to turn the returnkey array to a vector to dynamically change
