@@ -32,7 +32,7 @@ void MenuEngine::drawMenu(int x, int y,int spacing,int id)
 {
 	if (!CLR_USED)
 	for (size_t i = 0; i < menus->size(); i++)
-	{
+	{	
 		setPos(x, y + (i * spacing)); arrow(i,id); std::cout << menus->at(i);
 	}
 	else
@@ -130,6 +130,13 @@ void MenuEngine::clr(int clrcd, int indx)
 	if (Index == indx)
 		SetConsoleTextAttribute(konsol, clrcd);
 	else SetConsoleTextAttribute(konsol, 7);
+}
+
+void MenuEngine::reInit()
+{
+	menus = nullptr;
+	Index = 0;
+	isRun = true;
 }
 
 void NavKey(MenuEngine& obj, int toIndex)

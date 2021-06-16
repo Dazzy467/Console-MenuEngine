@@ -46,6 +46,7 @@ public:
 	}
 	void keyinput(int toIndex);
 	void kill();
+	void reInit();
 
 	bool returnsAtIndex(int atIndex);
 
@@ -54,7 +55,7 @@ public:
 	const size_t SizeOfreturnKey(){return returnKey.size();}
 private:
 	//var
-	std::vector<std::string>* menus;
+	std::vector<std::string>* menus = nullptr;
 	HANDLE konsol = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD kordinat;
 	//Need to turn the returnkey array to a vector to dynamically change
