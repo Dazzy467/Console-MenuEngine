@@ -19,7 +19,7 @@ int main()
               menu_flag = 1;
               menu_instance.setMenu(&main_menu[1],0,0,0);
               menu_instance.Index = 0;
-              system("cls");
+              menu_instance.clear_screen();
           }
           if (menu_instance.returnsAtIndex(2))
               menu_instance.kill();
@@ -33,7 +33,7 @@ int main()
                 menu_flag = 0;
                 menu_instance.setMenu(&main_menu[0],0,0,0);
                 menu_instance.Index = 1;
-                system("cls");
+                menu_instance.clear_screen();
             }
         }
     Sleep(1);
