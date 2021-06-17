@@ -11,6 +11,8 @@ MenuEngine::MenuEngine()
 	isRun = true;
 	CLR_USED = 0;
 	color_cd = 0;
+	fromKeyinput = UpdateMenu;
+	MessageListener = standBy;
 }
 
 void MenuEngine::setMenu(std::vector<std::string>* A,int useclr,int color,int setId)
@@ -30,18 +32,22 @@ void MenuEngine::setMenu(std::vector<std::string>* A,int useclr,int color,int se
 
 void MenuEngine::drawMenu(int x, int y,int spacing,int id)
 {
-	if (!CLR_USED)
-	for (size_t i = 0; i < menus->size(); i++)
-	{	
-		setPos(x, y + (i * spacing)); arrow(i,id); std::cout << menus->at(i);
-	}
-	else
+	if (fromKeyinput == UpdateMenu || MessageListener == UpdateMenu)
 	{
-		for (size_t i = 0; i < menus->size(); i++)
+		if (!CLR_USED)
+			for (size_t i = 0; i < menus->size(); i++)
+			{
+				setPos(x, y + (i * spacing)); arrow(i, id); std::cout << menus->at(i);
+			}
+		else
 		{
-			setPos(x, y + (i * spacing)); clrd(color_cd,i,id); std::cout << menus->at(i);
+			for (size_t i = 0; i < menus->size(); i++)
+			{
+				setPos(x, y + (i * spacing)); clrd(color_cd, i, id); std::cout << menus->at(i);
+			}
+			SetConsoleTextAttribute(konsol, 7);
 		}
-		SetConsoleTextAttribute(konsol, 7);
+		overrideMessage(MenuHalt);
 	}
 }
 
@@ -54,28 +60,38 @@ void MenuEngine::keyinput(int toIndex)
 		{
 			keydown[0] = true;
 			Index++;
+			fromKeyinput = UpdateMenu;
 		}
 		if (Index == toIndex && keydown[0] != true)
 		{
 			keydown[0] = true;
 			Index = 0;
+			fromKeyinput = UpdateMenu;
 		}
 	}
-	else keydown[0] = false;
+	else {
+		keydown[0] = false;
+		
+	}
 	if (GetAsyncKeyState(VK_UP) < 0 )
 	{
 		if (Index > 0 && keydown[1] != true)
 		{
 			keydown[1] = true;
 			Index--;
+			fromKeyinput = UpdateMenu;
 		}
 		if (Index == 0 && keydown[1] != true)
 		{
 			keydown[1] = true;
 			Index = toIndex;
+			fromKeyinput = UpdateMenu;
 		}
 	}
-	else keydown[1] = false;
+	else {
+		keydown[1] = false;
+		
+	}
 
 }
 
@@ -104,6 +120,11 @@ bool MenuEngine::returnsAtIndex(int atIndex)
 	return false;
 }
 
+void MenuEngine::sendMessage(messanger msg)
+{
+	MessageListener = msg;
+}
+
 void MenuEngine::setPos(SHORT x, SHORT y)
 {
 	kordinat.X = x;
@@ -130,6 +151,12 @@ void MenuEngine::clr(int clrcd, int indx)
 	if (Index == indx)
 		SetConsoleTextAttribute(konsol, clrcd);
 	else SetConsoleTextAttribute(konsol, 7);
+}
+
+void MenuEngine::overrideMessage(messanger msg)
+{
+	fromKeyinput = msg;
+	MessageListener = msg;
 }
 
 void MenuEngine::reInit()

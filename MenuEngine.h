@@ -19,6 +19,13 @@ YOURSOURCEFILE.CPP
 #include "MenuEngine.h"
 */
 
+enum messanger
+{
+	standBy,
+	UpdateMenu,
+	MenuHalt
+};
+
 class MenuEngine
 {
 public:
@@ -52,6 +59,7 @@ public:
 
 	//aksessor
 	const bool isrun() { return this->isRun; }
+	void sendMessage(messanger msg);
 	const size_t SizeOfreturnKey(){return returnKey.size();}
 private:
 	//var
@@ -68,10 +76,13 @@ private:
 	bool CLR_USED;
 	int color_cd;
 	int menId;
+	messanger fromKeyinput,MessageListener;
+
 	//fungsi privat
 	void arrow(int iter,int);
 	void clrd(int clrcd,int indx,int);
 	void clr(int clrcd,int indx);
+	void overrideMessage(messanger msg);
 };
 
 
