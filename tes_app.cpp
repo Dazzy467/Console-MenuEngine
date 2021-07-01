@@ -3,11 +3,12 @@
 
 std::vector<std::vector<std::string>> main_menu = {{"Start","Option","Exit"},{"AA","SHADOW","LIGHTING","Exit"}};
 MenuEngine menu_instance;
+
 int menu_flag = 0;
 // 1 MENUENGINE INSTANCE TO HANDLE A MENU
 int main()
 {
-    menu_instance.setMenu(&main_menu[0],0,0,0);
+    menu_instance.setMenu(&main_menu[0],USE_ARROW,14,0);
     do{
         menu_instance.drawMenu(30,10,1,0);
         if (menu_flag == 0)
@@ -17,7 +18,7 @@ int main()
           {
               menu_instance.sendMessage(UpdateMenu);
               menu_flag = 1;
-              menu_instance.setMenu(&main_menu[1],0,0,0);
+              menu_instance.setMenu(&main_menu[1],USE_ARROW,0,0);
               menu_instance.Index = 0;
               menu_instance.clear_screen();
           }
@@ -31,7 +32,7 @@ int main()
             {
                 menu_instance.sendMessage(UpdateMenu);
                 menu_flag = 0;
-                menu_instance.setMenu(&main_menu[0],0,0,0);
+                menu_instance.setMenu(&main_menu[0],USE_ARROW,14,0);
                 menu_instance.Index = 1;
                 menu_instance.clear_screen();
             }

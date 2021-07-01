@@ -1,10 +1,5 @@
 #pragma once
-//constexpression
-constexpr auto USE_COLOR = 467;;
-constexpr auto CLR_RED = 4;;
 
-
- 
 /*   DEPRECATED
 
 BUILT IN SETPOS MENUENGINE FUNCTION IS DEPRECATED
@@ -26,6 +21,15 @@ enum messanger
 	MenuHalt
 };
 
+enum flags
+{
+    USE_COLOR,
+	USE_ARROW,
+	Ignore,
+	Next,
+	Prev
+};
+
 class MenuEngine
 {
 public:
@@ -36,7 +40,7 @@ public:
 	int Index;
 
 	//fungsi
-	void setMenu(std::vector<std::string>* A,int useclr,int color,int setId);
+	void setMenu(std::vector<std::string>* A,flags useclr,int color,int setId);
 	void drawMenu(int x,int y,int spacing,int id);
 	void setPos(SHORT x, SHORT y);
 	template<typename arg>
@@ -51,6 +55,7 @@ public:
 			setPos(x, y); std::cout << args;
 		}
 	}
+
 	void keyinput(int toIndex);
 	void kill();
 	void reInit();
@@ -66,16 +71,17 @@ public:
     SetConsoleCursorPosition(console, tl);
 	}
 	bool returnsAtIndex(int atIndex);
-
 	//aksessor
 	const bool isrun() { return this->isRun; }
 	void sendMessage(messanger msg);
+	void setFlag(flags flg);
 	const size_t SizeOfreturnKey(){return returnKey.size();}
 private:
 	//var
 	std::vector<std::string>* menus = nullptr;
 	HANDLE konsol = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD kordinat;
+
 	//Need to turn the returnkey array to a vector to dynamically change
 	//bool returnKey[999];
 
@@ -87,6 +93,8 @@ private:
 	int color_cd;
 	int menId;
 	messanger fromKeyinput,MessageListener;
+	messanger* msg_pointer;
+	flags FLAG,drawMenuFlg;
 
 	//fungsi privat
 	void arrow(int iter,int);

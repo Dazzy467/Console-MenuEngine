@@ -13,33 +13,31 @@ MenuEngine::MenuEngine()
 	color_cd = 0;
 	fromKeyinput = UpdateMenu;
 	MessageListener = standBy;
+	msg_pointer = &this->MessageListener;
 }
 
-void MenuEngine::setMenu(std::vector<std::string>* A,int useclr,int color,int setId)
+void MenuEngine::setMenu(std::vector<std::string>* A,flags useclr,int color,int setId)
 {
 	menId = setId;
 	this->menus = A;
 	//check for vector size
 	if (returnKey.size() != A->size())
 	returnKey.resize(A->size(),false);
-	if (useclr == USE_COLOR)
-	{
-		CLR_USED = true;
-		color_cd = color;
-	}
-	else CLR_USED = false;
+	if (useclr != Ignore)
+	drawMenuFlg = useclr;
+	color_cd = color;
 }
 
 void MenuEngine::drawMenu(int x, int y,int spacing,int id)
 {
 	if (fromKeyinput == UpdateMenu || MessageListener == UpdateMenu)
 	{
-		if (!CLR_USED)
+		if (drawMenuFlg == USE_ARROW)
 			for (size_t i = 0; i < menus->size(); i++)
 			{
 				setPos(x, y + (i * spacing)); arrow(i, id); std::cout << menus->at(i);
 			}
-		else
+		else if (drawMenuFlg == USE_COLOR)
 		{
 			for (size_t i = 0; i < menus->size(); i++)
 			{
@@ -50,6 +48,7 @@ void MenuEngine::drawMenu(int x, int y,int spacing,int id)
 		overrideMessage(MenuHalt);
 	}
 }
+//experimental
 
 void MenuEngine::keyinput(int toIndex)
 {
@@ -104,25 +103,30 @@ bool MenuEngine::returnsAtIndex(int atIndex)
 {
 	if (GetAsyncKeyState(VK_RETURN) < 0 && Index == atIndex)
 	{
-		if (returnKey[0+atIndex] != true)
+		if (returnKey[atIndex] != true)
 			{
-				returnKey[0+atIndex]  = true;
+				returnKey[atIndex]  = true;
 			}
 	}
-	else if (returnKey[0+atIndex]  == true && GetAsyncKeyState(VK_RETURN) == 0)    // New index needs a new boolean variable so i used an array of bool to make this work
+	else if (returnKey[atIndex]  == true && GetAsyncKeyState(VK_RETURN) == 0)    // New index needs a new boolean variable so i used an array of bool to make this work
 	{                                                                              // i think this looks like a bad programming, is it innefficient ?
-		returnKey[0+atIndex]  = false;
+		returnKey[atIndex]  = false;
 		return true;
 		return false;
 
 	}
-	else returnKey[0+atIndex]  = false;
+	else returnKey[atIndex]  = false;
 	return false;
 }
 
 void MenuEngine::sendMessage(messanger msg)
 {
 	MessageListener = msg;
+}
+
+void MenuEngine::setFlag(flags flg)
+{
+	FLAG = flg;
 }
 
 void MenuEngine::setPos(SHORT x, SHORT y)
